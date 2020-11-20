@@ -9,7 +9,7 @@ use of dynamic branch prediction schemes.
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define N 5
+#define N 10
 #define MAX 10
 #define MIN 1
 
@@ -64,7 +64,7 @@ void display_array_contents(int * ar, int ar_size){
             return;
         }
 
-        printf("%d \n", *(ar + count) );
+        printf("%d ", *(ar + count) );
 
         count = count + 1;
 
@@ -72,13 +72,95 @@ void display_array_contents(int * ar, int ar_size){
 }
 
 
+/*
+* This function
+*/
+int paritition(int *ar, int low_index, int high_index){
+
+    //select the  pivot as the last element of the array
+    int pivot = *(ar + high_index);
+
+    //index of smaller element
+    int i = low_index - 1;
+
+    //intialize count for loop
+    int j = low_index;
+
+    //end index for the loop
+    int end_index = high_index - 1;
+
+    //start partition
+    partition_loop:
+
+        if( j > high_index -1){
+
+           //swap numbers
+           int temp = *(ar + i + 1);
+
+           *(ar + i + 1) = *(ar + high_index);
+
+           *(ar + high_index) = temp;
+
+           return (i+1);
+        }
+
+        //if current element is smaller than the pivot
+        if( *(ar + j)  < pivot ){
+
+            i = i + 1; //increment index of smaller element
+
+            //swap numbers
+            int temp = *(ar+i);
+
+            *(ar+i) = *(ar + j);
+
+            *(ar+j) = temp;
+
+        }
+
+    
+        j = j + 1;
+
+        goto partition_loop;
+
+    return 0;
+}
+
+
+
+void quickSort(int * ar, int low_index, int high_index){
+
+    if(low_index < high_index){
+
+        int partition_index = paritition(ar,low_index,high_index);
+
+        quickSort(ar, low_index, partition_index - 1);
+
+        quickSort(ar, partition_index + 1, high_index);
+    }
+
+}
+
+
 int main(int argc, char *argv[]){
     
-    printf("****Simulation of Dynamic Branch Prediction Scheme****\n");
+    printf("\n****Simulation of Dynamic Branch Prediction Scheme****\n");
 
     int * intAr = generate_random_array(N,MIN,MAX);
 
+    printf("Array Before Sorting: \n");
+
     display_array_contents(intAr, N);
+
+    printf("\n");
+
+    quickSort(intAr,0,N-1);
+
+    printf("Array After Sorting: \n");
+
+    display_array_contents(intAr, N);
+
+    printf("\n");
 
     delete intAr;
 
