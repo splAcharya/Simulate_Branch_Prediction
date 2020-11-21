@@ -1,10 +1,10 @@
-all: clean gelim
+all: clean msort
 
-gelim: GaussianElimination.cpp
-	g++ GaussianElimination.cpp -o gelim
-	./gelim
+msort: MergeSort.cpp
+	g++ MergeSort.cpp -o msort
+	./msort
 
 clean:
-	rm -f gelim
+	rm -f msort
 
 

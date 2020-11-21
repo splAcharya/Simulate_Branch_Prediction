@@ -9,11 +9,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define N 3    // Number of unknowns
+#define NUM_BRANCHES 11
+#define N 3   // Number of unknowns
+#define TAKEN 1
+#define NOT_TAKEN 0
+
+
+
 
 // function for elementary operation of swapping two rows 
-void swap_row(double mat[N][N+1], int i, int j) 
-{ 
+void swap_row(double mat[N][N+1], int i, int j) {
+
     //printf("Swapped rows %d and %d\n", i, j); 
     int  k = 0;
 
@@ -116,7 +122,7 @@ int forwardElim(double mat[N][N+1])
 
     outermost_for_loop:
 
-        if(k > N-1){
+        if(k > N-1){ //branch 1
             goto done_outermost_for_loop;
         }
 
@@ -130,11 +136,11 @@ int forwardElim(double mat[N][N+1])
 
         for_loop_amp:
 
-            if( i > N-1){
+            if( i > N-1){ //branch 2
                 goto done_for_loop_amp;
             }
             
-            if (abs(mat[i][k]) > v_max){
+            if (abs(mat[i][k]) > v_max){ 
                 v_max = mat[i][k];
                 i_max = i;
             } 
@@ -147,8 +153,13 @@ int forwardElim(double mat[N][N+1])
         // if a prinicipal diagonal element  is zero, 
         // it denotes that matrix is singular, and 
         // will lead to a division-by-zero later
-        if (!mat[k][i_max]) 
-            return k; // Matrix is singular 
+        if (!mat[k][i_max]){
+
+            goto singular_matrix_err;
+            
+            return k; // Matrix is singular
+        }
+             
 
         // Swap the greatest value row with current row
         if (i_max != k) {
@@ -186,7 +197,6 @@ int forwardElim(double mat[N][N+1])
 
             done_inner_for_loop:
 
-
             // filling lower triangular matrix with zeros
             mat[i][k] = 0;
 
@@ -196,7 +206,6 @@ int forwardElim(double mat[N][N+1])
 
         done_outer_for_loop:
 
-
         k++;
 
         goto outermost_for_loop;
@@ -205,7 +214,6 @@ int forwardElim(double mat[N][N+1])
     done_outermost_for_loop:
         return -1;
 } 
-
 
 
 
@@ -226,10 +234,10 @@ void gaussianElimination(double mat[N][N+1])
         //   many solutions, else inconsistent
 
         if (mat[singular_flag][N]) 
-            printf("Inconsistent System."); 
+            printf("Inconsistent System.\n"); 
         else
             printf("May have infinitely many "
-                   "solutions."); 
+                   "solutions.\n"); 
   
         return; 
     } 
@@ -244,15 +252,10 @@ void gaussianElimination(double mat[N][N+1])
 int main() 
 { 
 
-    /* double mat[N][N+1] = {{3.0, 2.0,-4.0, 3.0}, 
+    double mat[N][N+1] = {{3.0, 2.0,-4.0, 3.0}, 
                           {2.0, 3.0, 3.0, 15.0}, 
                           {5.0, -3, 1.0, 14.0} 
-                         }; */
-                         
-    double mat[N][N+1] = {{4.0, 2.0,-4.0, 3.0}, 
-                    {5.0, 3.0, 3.0, 15.0}, 
-                    {8.0, -3, 4.0, 14.0} 
-                    }; 
+                         };  
 
     gaussianElimination(mat); 
 
