@@ -1,10 +1,10 @@
-all: clean qsort
+all: clean gelim
 
-qsort: QuickSort.cpp
-	g++ QuickSort.cpp -o qsort
-	./qsort
+gelim: GaussianElimination.cpp
+	g++ GaussianElimination.cpp -o gelim
+	./gelim
 
 clean:
-	rm -f qsort
+	rm -f gelim
 
 
