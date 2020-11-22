@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-#include "BranchStats_2Bits.h"
+#include "BranchStats_3bits.h"
 
 using namespace std;
 
@@ -16,8 +16,7 @@ const int TOTAL_BRANCHES = 7;
 
 
 //declare a global stats 
-BranchStats_2Bits branch_stats[TOTAL_BRANCHES];
-const int initial_state = STATE_01;
+BranchStats_3Bits branch_stats[TOTAL_BRANCHES];
 
 
 /*
@@ -202,7 +201,7 @@ void merge(int *array, int l, int m, int r)
         branch_stats[3].increase_num_not_taken_branches();
         branch_stats[3].update_predictions(NOT_TAKEN);
 
-        if(larr[i] > rarr[j]){ //BRANCH 4, data dependent branching
+        if(larr[i] > rarr[j]){ //BRANCH 4
 
             array[k] = rarr[j];
             j++;
@@ -304,7 +303,7 @@ void mergeSort(int *array, int l, int r)
 // Driver code
 int main()
 {
-    printf("***********Simulation of 2 Bit Branch Prediction Scheme**************\n\n");
+    printf("***********Simulation of 3 Bit Branch Prediction Scheme**************\n\n");
 
     printf("***********Algorithm Used: Merge Sort*******************************\n\n");
 
@@ -334,4 +333,3 @@ int main()
 
 	return 0;
 }
-

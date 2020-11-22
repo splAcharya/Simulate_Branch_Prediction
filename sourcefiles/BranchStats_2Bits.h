@@ -1,5 +1,5 @@
-#ifndef _BRANCH_STATS_H_
-#define _BRANCH_STATS_H_
+#ifndef _BRANCH_STATS_2_BITS_H_
+#define _BRANCH_STATS_2_BITS_H_
 
 
 #include <stdlib.h>
@@ -13,7 +13,7 @@ const int STATE_01 = 2000;
 const int STATE_10 = 3000;
 const int STATE_11 = 4000;
 
-class BranchStats{
+class BranchStats_2Bits{
 
     private:
         int number_of_taken_branches;
@@ -28,7 +28,7 @@ class BranchStats{
 
     public:
 
-        BranchStats(){
+        BranchStats_2Bits(){
             this->number_of_taken_branches = 0;
 
             this->number_of_not_taken_branches = 0;
@@ -40,7 +40,7 @@ class BranchStats{
             this->number_of_miss_predictions = 0;
         }
 
-        BranchStats(int state){
+        BranchStats_2Bits(int state){
             this->number_of_taken_branches = 0;
 
             this->number_of_not_taken_branches = 0;
