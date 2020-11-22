@@ -38,11 +38,7 @@ int main(int argc, char * argv[]){
 
     //generate random number between
     for(int i = 0; i < N; i++){
-
-        int rand_num1 = (rand()% (25-1)) + 1;
-        int rand_num2 = (rand()% (75-25)) + 25;
-        int final_rand_num = rand_num1 + rand_num2;
-
+        int final_rand_num = (rand()% (100-1)) + 1;
         fprintf(fp,"%d ",final_rand_num);
     }
 

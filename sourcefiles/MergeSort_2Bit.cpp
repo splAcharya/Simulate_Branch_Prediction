@@ -8,8 +8,6 @@ using namespace std;
 
 //Random Number generation pramters
 const int N = 200;
-const int MAX_VALUE = 50;
-const int MIN_VALUE =  1;
 
 //Branch Prediction Parameters
 const int TOTAL_BRANCHES = 7;
@@ -18,40 +16,6 @@ const int TOTAL_BRANCHES = 7;
 //declare a global stats 
 BranchStats_2Bits branch_stats[TOTAL_BRANCHES];
 const int initial_state = STATE_01;
-
-
-/*
-* This function returns a dynamic integer array, the contents of this array are random numbers between the 
-* range specifed as max and min in parameters. The size of the array is specifed by the length parameter. 
-*@param length the length of the array or the number of elements to be genrate in the array
-*@param min the minimum value for the random number generation
-*@param max the maximum value for the random bumber generation
-*@returns a dynamic integer array
-*/
-int * generate_random_array(int length, int min, int max){
-
-    //intialize random seed
-    srand(time(NULL));
-
-    
-    int * intAr  = new int[length];
-
-    //initialze count to zero
-    int count = 0;
-
-    //generate random number between
-    gen_loop:
-        if (count > length-1){
-
-            return intAr;
-        }
-
-        *(intAr + count) = (rand()% (max-min)) + min;
-
-        count = count + 1;
-
-        goto gen_loop;
-}
 
 
 /*
@@ -308,20 +272,24 @@ int main()
 
     printf("***********Algorithm Used: Merge Sort*******************************\n\n");
 
-    printf("**********Generating Random Numbers*********************************\n\n");
-	int *arr = generate_random_array(N,MIN_VALUE,MAX_VALUE);
-    int arr_size = N;
+    printf("**********Reading Numbers From File*********************************\n\n");
+	FILE *fp;
+    fp = fopen("rand_numbers.txt","r");
+    int *arr = new int[N];
+    for(int i = 0; i < N ; i++){
+        fscanf(fp,"%d",(arr+i));
+    }
 
 
 	printf("***************Generated Array of Random Numbers ******************\n");
-	display_array_contents(arr, arr_size);
+	display_array_contents(arr, N);
     printf("\n");
 
     printf("**************Started Sorting*************************************\n\n");
-    mergeSort(arr, 0, arr_size - 1);
+    mergeSort(arr, 0, N - 1);
 
 	printf("**************Sorted Array is*************\n\n");
-	display_array_contents(arr, arr_size);
+	display_array_contents(arr, N);
     printf("\n");
 
     printf("*********Branch Statistics***********\n\n");
@@ -334,4 +302,3 @@ int main()
 
 	return 0;
 }
-

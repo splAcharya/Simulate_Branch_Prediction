@@ -63,7 +63,7 @@ class BranchStats_3Bits{
 
             //initialize combination tabel for 3 bit predictor
             for(int i=1000; i < 9000; i+= 1000){
-                this->combination_table[i] = this->initialize_with_vector(TAKEN);
+                this->combination_table[i] = this->initialize_with_vector(NOT_TAKEN);
             }
 
             //initialize global history table with T,T,T

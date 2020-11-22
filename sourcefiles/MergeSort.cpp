@@ -1,49 +1,12 @@
 // C++ program for Merge Sort
 #include <stdlib.h>
 #include <stdio.h>
-#include <time.h>
+
 
 using namespace std;
 
 //Random Number generation pramters
-#define N 10
-#define MAX_VALUE 50
-#define MIN_VALUE 1
-
-
-
-/*
-* This function returns a dynamic integer array, the contents of this array are random numbers between the 
-* range specifed as max and min in parameters. The size of the array is specifed by the length parameter. 
-*@param length the length of the array or the number of elements to be genrate in the array
-*@param min the minimum value for the random number generation
-*@param max the maximum value for the random bumber generation
-*@returns a dynamic integer array
-*/
-int * generate_random_array(int length, int min, int max){
-
-    //intialize random seed
-    srand(time(NULL));
-
-    
-    int * intAr  = new int[length];
-
-    //initialze count to zero
-    int count = 0;
-
-    //generate random number between
-    gen_loop:
-        if (count > length-1){
-
-            return intAr;
-        }
-
-        *(intAr + count) = (rand()% (max-min)) + min;
-
-        count = count + 1;
-
-        goto gen_loop;
-}
+const int N = 200;
 
 
 /*
@@ -98,9 +61,10 @@ void merge(int *array, int l, int m, int r)
 
     for_loop_left:
 
-        if( i > nl-1){
+        if( i > nl-1){ //BRANCH 0
+            
             goto done_for_loop_left;
-        }
+        }        
 
         larr[i] = array[l + i];
 
@@ -115,7 +79,8 @@ void merge(int *array, int l, int m, int r)
     //copy to right temp array
     for_loop_right:
 
-        if( j > nr-1){
+        if( j > nr-1){ //BRANCH 1
+
             goto done_for_loop_right;
         }
 
@@ -138,38 +103,31 @@ void merge(int *array, int l, int m, int r)
     // Initial index of merged subarray
     k = l;
 
-
-
     //merge arrays
     merge_array_while_loop:
         
         //converting while to if, took 2 hours but nedded to change logic from && to ||
-        if((i > nl-1) || (j > nr-1)){
+        if((i > nl-1) || (j > nr-1)){ //BRANCH 2
             goto done_merge_array_while_loop;
         }
 
-        if(larr[i] <= rarr[j]){
-            goto swap_upper;
-        }
+        if(larr[i] <= rarr[j]){ //BRANCH 3, data dependent branching
 
-        if(larr[i] > rarr[j]){
-            goto swap_lower;
-        }
-
-        swap_upper:
             array[k] = larr[i];
             i++;
             k++;
+
             goto merge_array_while_loop;
+        }
 
-        
+        if(larr[i] > rarr[j]){ //BRANCH 4, data dependent branching
 
-        swap_lower:
             array[k] = rarr[j];
             j++;
             k++;
-            goto merge_array_while_loop;
 
+            goto merge_array_while_loop;
+        }
 
     done_merge_array_while_loop:
 
@@ -177,9 +135,10 @@ void merge(int *array, int l, int m, int r)
     // L[], if there are any
     copy_remaining_left_while_loop:
 
-        if(i > nl-1){
+        if(i > nl-1){ //BRANCH 5
+
             goto done_copy_remaining_left_while_loop;
-        }
+        }      
         
         array[k] = larr[i];
         i++;
@@ -195,7 +154,7 @@ void merge(int *array, int l, int m, int r)
 
     copy_remaining_right_while_loop:
 
-        if (j > nr-1) {
+        if (j > nr-1) { //BRANCH 6
             goto done_copy_remaining_right_while_loop;
         }
 
@@ -238,16 +197,28 @@ void mergeSort(int *array, int l, int r)
 // Driver code
 int main()
 {
-	int *arr = generate_random_array(N,MIN_VALUE,MAX_VALUE);
-    int arr_size = N;
 
-	printf("Given array is \n");
-	display_array_contents(arr, arr_size);
+    printf("***********Algorithm Used: Merge Sort*******************************\n\n");
 
-	mergeSort(arr, 0, arr_size - 1);
+    printf("**********Reading Numbers From File*********************************\n\n");
+	FILE *fp;
+    fp = fopen("rand_numbers.txt","r");
+    int *arr = new int[N];
+    for(int i = 0; i < N ; i++){
+        fscanf(fp,"%d",(arr+i));
+    }
 
-	printf("Sorted array is \n");
-	display_array_contents(arr, arr_size);
+
+	printf("***************Generated Array of Random Numbers ******************\n");
+	display_array_contents(arr, N);
+    printf("\n");
+
+    printf("**************Started Sorting*************************************\n\n");
+    mergeSort(arr, 0, N - 1);
+
+	printf("**************Sorted Array is*************\n\n");
+	display_array_contents(arr, N);
+    printf("\n");
+
 	return 0;
 }
-
