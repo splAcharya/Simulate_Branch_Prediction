@@ -86,8 +86,8 @@ class BranchStats_2Bits{
             double total_predictions = this->number_of_correct_predictions + this->number_of_miss_predictions;
             double cpr = this->number_of_correct_predictions / total_predictions;
             double mpr = this->number_of_miss_predictions / total_predictions;
-            printf("Correct Branch Prediction Rate: %0.2f %%\n", cpr*100);
-            printf("Miss Branch Prediction Rate: %0.2f %% \n", mpr*100);
+            printf("Correct Branch Prediction : %0.2f %%\n", cpr*100);
+            printf("Miss Branch Prediction : %0.2f %% \n", mpr*100);
         }
 
         void update_predictions(int program_action){
