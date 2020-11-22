@@ -2,14 +2,22 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include "BranchStats.h"
 
 using namespace std;
 
 //Random Number generation pramters
-#define N 10
-#define MAX_VALUE 50
-#define MIN_VALUE 1
+const int N = 200;
+const int MAX_VALUE = 50;
+const int MIN_VALUE =  1;
 
+//Branch Prediction Parameters
+const int TOTAL_BRANCHES = 7;
+
+
+//declare a global stats 
+BranchStats branch_stats[TOTAL_BRANCHES];
+const int initial_state = STATE_01;
 
 
 /*
@@ -98,9 +106,19 @@ void merge(int *array, int l, int m, int r)
 
     for_loop_left:
 
-        if( i > nl-1){
+        if( i > nl-1){ //BRANCH 0
+            
+            //update taken branch stats
+            branch_stats[0].increase_num_taken_branches();
+            branch_stats[0].update_predictions(TAKEN);
+
             goto done_for_loop_left;
         }
+
+        //update not taken branch stats
+        branch_stats[0].increase_num_not_taken_branches();
+        branch_stats[0].update_predictions(NOT_TAKEN);
+        
 
         larr[i] = array[l + i];
 
@@ -115,9 +133,19 @@ void merge(int *array, int l, int m, int r)
     //copy to right temp array
     for_loop_right:
 
-        if( j > nr-1){
+        if( j > nr-1){ //BRANCH 1
+
+            //update taken branch stats
+            branch_stats[1].increase_num_taken_branches();
+            branch_stats[1].update_predictions(TAKEN);
+
             goto done_for_loop_right;
         }
+
+        //update not taken branch stats
+        branch_stats[1].increase_num_not_taken_branches();
+        branch_stats[1].update_predictions(NOT_TAKEN);
+
 
         rarr[j] = array[m + 1 + j];
         
@@ -144,32 +172,52 @@ void merge(int *array, int l, int m, int r)
     merge_array_while_loop:
         
         //converting while to if, took 2 hours but nedded to change logic from && to ||
-        if((i > nl-1) || (j > nr-1)){
+        if((i > nl-1) || (j > nr-1)){ //BRANCH 2
+
+            //update taken branch stats
+            branch_stats[2].increase_num_taken_branches();
+            branch_stats[2].update_predictions(TAKEN);
+
             goto done_merge_array_while_loop;
         }
+        
+        //update not taken branch stats
+        branch_stats[2].increase_num_not_taken_branches();
+        branch_stats[2].update_predictions(NOT_TAKEN);
 
-        if(larr[i] <= rarr[j]){
-            goto swap_upper;
-        }
+        if(larr[i] <= rarr[j]){ //BRANCH 3, data dependent branching
 
-        if(larr[i] > rarr[j]){
-            goto swap_lower;
-        }
-
-        swap_upper:
             array[k] = larr[i];
             i++;
             k++;
+
+            //update taken branch stats
+            branch_stats[3].increase_num_taken_branches();
+            branch_stats[3].update_predictions(TAKEN);
+
             goto merge_array_while_loop;
+        }
 
-        
+        //update not taken branch stats
+        branch_stats[3].increase_num_not_taken_branches();
+        branch_stats[3].update_predictions(NOT_TAKEN);
 
-        swap_lower:
+        if(larr[i] > rarr[j]){ //BRANCH 4
+
             array[k] = rarr[j];
             j++;
             k++;
-            goto merge_array_while_loop;
 
+            //update taken branch stats
+            branch_stats[4].increase_num_taken_branches();
+            branch_stats[4].update_predictions(TAKEN);
+
+            goto merge_array_while_loop;
+        }
+
+        //update not taken branch stats
+        branch_stats[4].increase_num_not_taken_branches();
+        branch_stats[4].update_predictions(NOT_TAKEN);
 
     done_merge_array_while_loop:
 
@@ -177,9 +225,18 @@ void merge(int *array, int l, int m, int r)
     // L[], if there are any
     copy_remaining_left_while_loop:
 
-        if(i > nl-1){
+        if(i > nl-1){ //BRANCH 5
+
+            //update taken branch stats
+            branch_stats[5].increase_num_taken_branches();
+            branch_stats[5].update_predictions(TAKEN);
+
             goto done_copy_remaining_left_while_loop;
         }
+
+        //update not taken branch stats
+        branch_stats[5].increase_num_not_taken_branches();
+        branch_stats[5].update_predictions(NOT_TAKEN);        
         
         array[k] = larr[i];
         i++;
@@ -195,9 +252,18 @@ void merge(int *array, int l, int m, int r)
 
     copy_remaining_right_while_loop:
 
-        if (j > nr-1) {
+        if (j > nr-1) { //BRANCH 6
+
+            //update taken branch stats
+            branch_stats[6].increase_num_taken_branches();
+            branch_stats[6].update_predictions(TAKEN);
+
             goto done_copy_remaining_right_while_loop;
         }
+
+        //update not taken branch stats
+        branch_stats[6].increase_num_not_taken_branches();
+        branch_stats[6].update_predictions(NOT_TAKEN);
 
         array[k] = rarr[j];
         j++;
@@ -238,16 +304,33 @@ void mergeSort(int *array, int l, int r)
 // Driver code
 int main()
 {
+    printf("***********Simulation of 2 Bit Branch Prediction Scheme**************\n");
+    printf("***********Algorithm Used: Merge Sort*******************************\n");
+
+    printf("**********Generating Random Numbers*********************************\n");
 	int *arr = generate_random_array(N,MIN_VALUE,MAX_VALUE);
     int arr_size = N;
 
-	printf("Given array is \n");
+
+	printf("***************Generated Array of Random Numbers ******************\n");
 	display_array_contents(arr, arr_size);
 
-	mergeSort(arr, 0, arr_size - 1);
 
-	printf("Sorted array is \n");
+    printf("**************Started Sorting*************************************\n");
+    mergeSort(arr, 0, arr_size - 1);
+
+	printf("**************Sorted Array is*************\n");
 	display_array_contents(arr, arr_size);
+
+
+    printf("*********Branch Statistics***********\n\n");
+    for(int i = 0; i < TOTAL_BRANCHES; i++){
+        printf("Branch: %d\n",i);
+        branch_stats[i].print_statistics();
+        printf("\n");
+    }
+
+
 	return 0;
 }
 
