@@ -2,7 +2,9 @@
 *Author: Swapnil Acharya
 *Date: 11/22/2020
 *File: gen_numbers.cpp
-*Description: This program generates random numbers and writes them in a file 
+*Description: This program generates random numbers and writes them in a file.
+*             The numbers of random numbers to be generated must be supplied as argument
+*			  to the executable
 */
 
 
@@ -11,9 +13,7 @@
 #include <time.h>
 
 /*
-* This function returns a dynamic integer array, the contents of this array are random numbers between the 
-* range specifed as max and min in parameters. The size of the array is specifed by the length parameter. 
-*@param length the length of the array or the number of elements to be genrate in the array
+* This 
 *@param min the minimum value for the random number generation
 *@param max the maximum value for the random bumber generation
 *@returns a dynamic integer array

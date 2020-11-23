@@ -6,15 +6,15 @@ gnum: gen_numbers.cpp
 
 
 msort: MergeSort.cpp
-	g++ MergeSort.cpp -o msort
+	g++ -std=c++11 MergeSort.cpp -o msort
 
 
 m2bit: BranchStats_2Bits.h MergeSort_2Bit.cpp
-	g++ BranchStats_2Bits.h MergeSort_2Bit.cpp -o m2bit
+	g++ -std=c++11 BranchStats_2Bits.h MergeSort_2Bit.cpp -o m2bit
 
 
 m3bit: BranchStats_3Bits.h MergeSort_3Bit.cpp
-	g++ BranchStats_3Bits.h MergeSort_3Bit.cpp -o m3bit
+	g++ -std=c++11 BranchStats_3Bits.h MergeSort_3Bit.cpp -o m3bit
 
 
 clean:

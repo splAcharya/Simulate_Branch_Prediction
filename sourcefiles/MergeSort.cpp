@@ -179,32 +179,44 @@ void merge(int *array, int l, int m, int r)
 }
 
 
-// l is for left index and r is
-// right index of the sub-array
-// of arr to be sorted 
+/*
+* This function sort an input array based on merge sort Algorithm.
+* Merge Sort is based on dive and conquer approach. Merge sort 
+* partitions an input array into two halves, then recursively calls 
+* itself for the two partitions, and then merge the two sort partitions. 
+* @param array the input integer array that is to be sorted
+* @param l the left or the lower index of the array or the section of the
+*  array to be sorted
+* @param r the right or the upper index of the array or the section of the
+*  array to be sorted
+* @returns None the input array is sorted when the function is complete
+*/
 void mergeSort(int *array, int l, int r)
 {
     int m;
+
 
 	if(l > r - 1){ //BRANCH 0
 		
 		goto done_merge_sort;
 	}
 	
-	// Same as (l+r)/2, but avoids
-	// overflow for large l and h
-	//int m = (l + r - l) / 2;
+	//get the middle index for array partition
+	// Same as (l+r)/2, but avoids overflow for large l and h
 	m = l + (r-l)/2;
 
-	// Sort first and second halves
+	//Recursively call the firt half of the array for sorting
 	mergeSort(array, l, m);
 
+	//Recursively call the firt half of the array for sorting
 	mergeSort(array, m + 1, r);
 
+	//Merge the sorted halves
 	merge(array, l, m, r);
 
 	done_merge_sort:
-		int done = 0;
+		//just a dummy bariabel so that the label "done_merge_sort" works
+		int done = 0; 
 	
 }		
 

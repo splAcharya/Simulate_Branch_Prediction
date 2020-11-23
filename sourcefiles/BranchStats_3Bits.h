@@ -1,3 +1,11 @@
+/*
+* Author: Swapnil Acharya
+* Date: 11/21/2020
+* File: BranchStats_2Bits.h
+* Description: The BranchStats_3Bits class in this file implements 3-bit prediction scheme
+*/
+
+
 #ifndef _BRANCH_STATS_3_BITS_H_
 #define _BRANCH_STATS_3_BITS_H_
 
@@ -7,11 +15,11 @@
 #include <unordered_map>
 #include <vector>
 
+//representations for program actions and predictions
 const int NOT_TAKEN = 0;
 const int TAKEN = 1;
 
-
-
+//representations for possible hisotry bits
 const int COMB_000 = 1000; //N,N,N
 const int COMB_001 = 2000; //N,N,T
 const int COMB_010 = 3000; //N,T,N
@@ -22,27 +30,34 @@ const int COMB_110 = 7000; //T,T,N
 const int COMB_111 = 8000; //T,T,T
 
 
-
-
 class BranchStats_3Bits{
 
     private:
+	    //variable to hold number of taken branches
         int number_of_taken_branches;
 
+		//variable to hold number of not taken branches
         int number_of_not_taken_branches;
         
+		//variable to hold number of correct predictions
         int number_of_correct_predictions;
 
+		//variable to hold number of incorrect predictions
         int number_of_miss_predictions;
 
+		//a hash table to hold combination tabel of hisotry bits and current predict value
+		//with combination being the key and prediction value being the value for the hash table
         std::unordered_map<int,int> combination_table;
 
+		//a vector to hold the global history bits
         std::vector<int> global_history_table;
 
 
     public:
 
-        BranchStats_3Bits(){
+		//default constructor initializes all combination table for 3 bt 
+        //predictor to be NOT TAKEN
+		BranchStats_3Bits(){
 
             this->number_of_taken_branches = 0;
 
@@ -63,32 +78,38 @@ class BranchStats_3Bits{
         }
 
         
-
+		//method to increase number of taken branches
         void increase_num_taken_branches(){
             this->number_of_taken_branches++;
         }
-
+		
+		
+		//method to fetch  number of taken branches
         int get_num_taken_branches() const{
             return this->number_of_taken_branches;
         }
 
+		//method to increase number of not taken branches
         void increase_num_not_taken_branches(){
             this->number_of_not_taken_branches++;
         }
 
+		//method to fetch  number of not taken branches
         int get_num_not_taken_branches() const{
             return this->number_of_not_taken_branches;
         }
 
-
+		//method to fetch  number of correct branch predictions
         int get_num_correct_predictions() const{
             return this->number_of_correct_predictions;
         }
 
+		//method to fetch  number of incorrect branch predictions
         int get_num_miss_predictions() const{
             return this->number_of_miss_predictions;
         }
 
+		//method to display statis for this branch
         void print_statistics(){
             printf("Number of Taken Branches: %d\n",this->number_of_taken_branches);
             printf("Number of Not Taken Branches: %d\n",this->number_of_not_taken_branches);
@@ -102,6 +123,12 @@ class BranchStats_3Bits{
             printf("Miss Branch Prediction : %0.2f %% \n", mpr*100);
         }
 
+		/*
+		*This method gets the last entry from global history tabel and goes to the combination table,
+		* and fetches the prediction for that entry. Then the prediction and the action taken by parameters
+		* are use to update correct/incorrect predictions, update the entry on combination table and add 
+		* a new entry in global history.
+		*/
 
         void update_predictions(int program_action){
 

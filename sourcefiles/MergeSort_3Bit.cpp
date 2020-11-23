@@ -1,5 +1,5 @@
 /*
-*Author: Swapnil Acharya
+* Author: Swapnil Acharya
 *Date: 11/21/2020
 *File: MergeSort_3Bit.cpp
 */
