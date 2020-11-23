@@ -1,11 +1,17 @@
+/*
+*Author: Swapnil Acharya
+*Date: 11/21/2020
+*File: MergeSort.cpp
+*/
+
+
 // C++ program for Merge Sort
 #include <stdlib.h>
 #include <stdio.h>
 
-
 using namespace std;
 
-//Random Number generation pramters
+//Problem size
 const int N = 200;
 
 
@@ -61,11 +67,11 @@ void merge(int *array, int l, int m, int r)
 
     for_loop_left:
 
-        if( i > nl-1){ //BRANCH 0
+        if( i > nl-1){ //BRANCH 1
             
             goto done_for_loop_left;
-        }        
-
+        }
+        
         larr[i] = array[l + i];
 
         i++;
@@ -79,7 +85,7 @@ void merge(int *array, int l, int m, int r)
     //copy to right temp array
     for_loop_right:
 
-        if( j > nr-1){ //BRANCH 1
+        if( j > nr-1){ //BRANCH 2
 
             goto done_for_loop_right;
         }
@@ -103,15 +109,18 @@ void merge(int *array, int l, int m, int r)
     // Initial index of merged subarray
     k = l;
 
+
+
     //merge arrays
     merge_array_while_loop:
         
         //converting while to if, took 2 hours but nedded to change logic from && to ||
-        if((i > nl-1) || (j > nr-1)){ //BRANCH 2
+        if((i > nl-1) || (j > nr-1)){ //BRANCH 3
+
             goto done_merge_array_while_loop;
         }
 
-        if(larr[i] <= rarr[j]){ //BRANCH 3, data dependent branching
+        if(larr[i] <= rarr[j]){ //BRANCH 4, data dependent branching
 
             array[k] = larr[i];
             i++;
@@ -120,7 +129,7 @@ void merge(int *array, int l, int m, int r)
             goto merge_array_while_loop;
         }
 
-        if(larr[i] > rarr[j]){ //BRANCH 4, data dependent branching
+        if(larr[i] > rarr[j]){ //BRANCH 5, data dependent branching
 
             array[k] = rarr[j];
             j++;
@@ -135,7 +144,7 @@ void merge(int *array, int l, int m, int r)
     // L[], if there are any
     copy_remaining_left_while_loop:
 
-        if(i > nl-1){ //BRANCH 5
+        if(i > nl-1){ //BRANCH 6
 
             goto done_copy_remaining_left_while_loop;
         }      
@@ -154,7 +163,8 @@ void merge(int *array, int l, int m, int r)
 
     copy_remaining_right_while_loop:
 
-        if (j > nr-1) { //BRANCH 6
+        if (j > nr-1) { //BRANCH 7
+
             goto done_copy_remaining_right_while_loop;
         }
 
@@ -176,27 +186,34 @@ void mergeSort(int *array, int l, int r)
 {
     int m;
 
-	if (l < r) {
-
-		// Same as (l+r)/2, but avoids
-		// overflow for large l and h
-		//int m = (l + r - l) / 2;
-        int m = l + (r-l)/2;
-
-		// Sort first and second halves
-		mergeSort(array, l, m);
-
-		mergeSort(array, m + 1, r);
-
-		merge(array, l, m, r);
+	if(l > r - 1){ //BRANCH 0
+		
+		goto done_merge_sort;
 	}
-}
+	
+	// Same as (l+r)/2, but avoids
+	// overflow for large l and h
+	//int m = (l + r - l) / 2;
+	m = l + (r-l)/2;
+
+	// Sort first and second halves
+	mergeSort(array, l, m);
+
+	mergeSort(array, m + 1, r);
+
+	merge(array, l, m, r);
+
+	done_merge_sort:
+		int done = 0;
+	
+}		
 
 
 
 // Driver code
 int main()
 {
+    printf("***********Simulation of Base Algorithms for Predictors **************\n\n");
 
     printf("***********Algorithm Used: Merge Sort*******************************\n\n");
 
@@ -219,6 +236,7 @@ int main()
 	printf("**************Sorted Array is*************\n\n");
 	display_array_contents(arr, N);
     printf("\n");
+
 
 	return 0;
 }
