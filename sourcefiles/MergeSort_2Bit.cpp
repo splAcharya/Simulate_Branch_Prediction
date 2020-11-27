@@ -53,9 +53,19 @@ void display_array_contents(int * ar, int ar_size){
 }
 
 
-// Merges two subarrays of arr[].
-// First subarray is arr[l..m]
-// Second subarray is arr[m+1..r]
+
+/*
+* This function sorts and merge an array, this function is
+* a helper function for mergesort algorithm
+* @param array the integer array to be sorted and merged
+* @param l the left or the lower index of the array or the section of the
+*  array to be sorted 
+* @param m the center or the middle index of the array or the section of the
+*  array to be sorted
+* @param r the right or the upper index of the array or the section of the
+*  array to be sorted
+* @returns None the input array is sorted when the function is complete
+*/
 void merge(int *array, int l, int m, int r)
 {
     int i , j , k, nl, nr;
@@ -246,9 +256,18 @@ void merge(int *array, int l, int m, int r)
 }
 
 
-// l is for left index and r is
-// right index of the sub-array
-// of arr to be sorted 
+/*
+* This function sort an input array based on merge sort Algorithm.
+* Merge Sort is based on dive and conquer approach. Merge sort 
+* partitions an input array into two halves, then recursively calls 
+* itself for the two partitions, and then merge the two sort partitions. 
+* @param array the input integer array that is to be sorted
+* @param l the left or the lower index of the array or the section of the
+*  array to be sorted
+* @param r the right or the upper index of the array or the section of the
+*  array to be sorted
+* @returns None the input array is sorted when the function is complete
+*/
 void mergeSort(int *array, int l, int r)
 {
     int m;
@@ -266,9 +285,7 @@ void mergeSort(int *array, int l, int r)
     branch_stats[0].increase_num_not_taken_branches();
     branch_stats[0].update_predictions(NOT_TAKEN);
 	
-	// Same as (l+r)/2, but avoids
-	// overflow for large l and h
-	//int m = (l + r - l) / 2;
+	//compute center partition index
 	m = l + (r-l)/2;
 
 	// Sort first and second halves
@@ -284,8 +301,7 @@ void mergeSort(int *array, int l, int r)
 }		
 
 
-
-// Driver code
+//main program
 int main()
 {
     printf("***********Simulation of 2 Bit Branch Prediction Scheme**************\n\n");

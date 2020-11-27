@@ -44,9 +44,18 @@ void display_array_contents(int * ar, int ar_size){
 }
 
 
-// Merges two subarrays of arr[].
-// First subarray is arr[l..m]
-// Second subarray is arr[m+1..r]
+/*
+* This function sorts and merge an array, this function is
+* a helper function for mergesort algorithm
+* @param array the integer array to be sorted and merged
+* @param l the left or the lower index of the array or the section of the
+*  array to be sorted 
+* @param m the center or the middle index of the array or the section of the
+*  array to be sorted
+* @param r the right or the upper index of the array or the section of the
+*  array to be sorted
+* @returns None the input array is sorted when the function is complete
+*/
 void merge(int *array, int l, int m, int r)
 {
     int i , j , k, nl, nr;
@@ -222,7 +231,7 @@ void mergeSort(int *array, int l, int r)
 
 
 
-// Driver code
+//main program
 int main()
 {
     printf("***********Simulation of Base Algorithms for Predictors **************\n\n");
